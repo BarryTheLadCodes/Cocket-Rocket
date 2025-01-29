@@ -1,6 +1,7 @@
 import math
 import mpu6050 # type: ignore
 import time
+import json
 import numpy as np
 
 # Create a new Mpu6050 object
@@ -30,9 +31,9 @@ class KalmanFilter:
         # Estimate covariance
         self.P = np.eye(2)
     
-    def predict(self):
-        # Predict state
-        self.x = self.A @ self.x
+    def predict(self, gyroscope_data):
+        self.x[0] += self.x[1] * self.dt + gyroscope_data * self.dt  # Update angle prediction
+        self.x[1] += gyroscope_data * self.dt  # Update angular velocity prediction
         # Predict covariance
         self.P = self.A @ self.P @ self.A.T + self.Q
     
@@ -62,7 +63,24 @@ def accel_pitch_roll(accelerometer_data):
     roll = math.atan2(-ax, math.sqrt(ay**2 + az**2)) * 180 / math.pi
     return pitch, roll
 
+def json_write(pitch, roll, ax, ay, az, gx, gy, gz, start_time):
+    data = {
+        "time": time.time() - start_time,
+        "pitch": pitch,
+        "roll": roll,
+        "ax": ax,
+        "ay": ay,
+        "az": az,
+        "gx": gx,
+        "gy": gy,
+        "gz": gz
+    }
+    with open(f"data_recordings/{time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}.json", "w") as file:
+        json.dump(data, file)
+
 def main():
+    start_time = time.time()
+
     dt = 0.001 # Time step
     process_noise = 0.01
     measurement_noise = 0.1
@@ -78,8 +96,8 @@ def main():
         acc_pitch, acc_roll = accel_pitch_roll(accelerometer_data)
 
         # Predict using gyroscope data
-        pitch_filter.predict()
-        roll_filter.predict()
+        pitch_filter.predict(gyroscope_data['x'])
+        roll_filter.predict(gyroscope_data['y'])
 
         # Update using accelerometer data
         pitch_filter.update(np.array([[acc_pitch]]))
