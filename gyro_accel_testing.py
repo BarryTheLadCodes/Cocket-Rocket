@@ -10,7 +10,6 @@ alpha = 0.98 #Fliter constant, determines split between accelerometer and gyrosc
 pitch_angle = 0
 roll_angle = 0
 yaw_angle = 0
-print_count = 0 #Counter to print data every 1000 iterations
 start_time = time.time()
 
 # Define a function to read the sensor data
@@ -39,8 +38,8 @@ def angles():
     roll_angle_accelerometer = math.atan(accelerometer_x/math.sqrt(accelerometer_y**2 + accelerometer_z**2))
 
     #Combine accelerometer and gyroscope data for final angle
-    pitch_angle = alpha * (pitch_angle + gyroscope_data['x'] * delay) + (1 - alpha) * pitch_angle_accelerometer
-    roll_angle = alpha * (roll_angle + gyroscope_data['y'] * delay) + (1 - alpha) * roll_angle_accelerometer
+    pitch_angle = alpha * (pitch_angle + pitch_data * delay) + (1 - alpha) * pitch_angle_accelerometer
+    roll_angle = alpha * (roll_angle + roll_data * delay) + (1 - alpha) * roll_angle_accelerometer
 
     #Integrate yaw angular velocity with time to get yaw angle approximation
     yaw_angle += yaw_data * delay
