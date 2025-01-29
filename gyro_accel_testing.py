@@ -65,17 +65,18 @@ def accel_pitch_roll(accelerometer_data):
 
 def json_write(pitch, roll, ax, ay, az, gx, gy, gz, start_time):
     data = {
-        "time": time.time() - start_time,
-        "pitch": pitch,
-        "roll": roll,
-        "ax": ax,
-        "ay": ay,
-        "az": az,
-        "gx": gx,
-        "gy": gy,
-        "gz": gz
+        f"time.time() - start_time": {
+            "pitch": pitch,
+            "roll": roll,
+            "ax": ax,
+            "ay": ay,
+            "az": az,
+            "gx": gx,
+            "gy": gy,
+            "gz": gz
+        },
     }
-    with open(f"data_recordings/{time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}.json", "w") as file:
+    with open(f"data_recordings/{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}.json", "w") as file:
         json.dump(data, file)
 
 def main():
