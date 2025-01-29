@@ -56,7 +56,7 @@ while True:
     # Read the sensor data
     pitch_angle, roll_angle, yaw_angle = angles()
     # Print the sensor data every second
-    print(time.time() - start_time >= 1)
+    print(time.time() - start_time)
     if time.time() - start_time >= 1:
         print(f"Pitch: {pitch_angle}")
         print(f"Roll: {roll_angle}")
