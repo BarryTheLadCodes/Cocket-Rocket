@@ -56,5 +56,4 @@ while True:
         print(f"Yaw: {yaw_angle}\n")
     
     print_count += 1
-    print(print_count)
     time.sleep(delay)
