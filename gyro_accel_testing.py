@@ -1,65 +1,97 @@
 import math
 import mpu6050 # type: ignore
 import time
+import numpy as np
 
-# Create a new Mpu6050 object
-mpu6050 = mpu6050.mpu6050(0x68)
-
-alpha = 0.98 #Fliter constant, determines split between accelerometer and gyroscope data
-delay = 0.001 #Delay between readings
-pitch_angle_gyroscope = 0
-roll_angle_gyroscope = 0
-pitch_angle = 0
-roll_angle = 0
-yaw_angle = 0
-start_time = time.time()
+class KalmanFilter:
+    def __init__(self, dt, process_noise, measurement_noise):
+        self.dt = dt  # Time step
+        self.process_noise = process_noise
+        self.measurement_noise = measurement_noise
+        
+        # State transition matrix
+        self.A = np.array([[1, -dt], [0, 1]])
+        
+        # Measurement matrix
+        self.H = np.array([[1, 0]])
+        
+        # Process noise covariance
+        self.Q = np.array([[process_noise, 0], [0, process_noise]])
+        
+        # Measurement noise covariance
+        self.R = np.array([[measurement_noise]])
+        
+        # State estimate
+        self.x = np.array([[0], [0]])
+        
+        # Estimate covariance
+        self.P = np.eye(2)
+    
+    def predict(self):
+        # Predict state
+        self.x = self.A @ self.x
+        # Predict covariance
+        self.P = self.A @ self.P @ self.A.T + self.Q
+    
+    def update(self, z):
+        # Calculate Kalman gain
+        K = self.P @ self.H.T @ np.linalg.inv(self.H @ self.P @ self.H.T + self.R)
+        # Update state estimate
+        self.x = self.x + K @ (z - self.H @ self.x)
+        # Update covariance
+        self.P = (np.eye(2) - K @ self.H) @ self.P
+    
+    def get_state(self):
+        return self.x[0, 0]
 
 # Define a function to read the sensor data
 def read_sensor_data():
-    # Read the accelerometer values
     accelerometer_data = mpu6050.get_accel_data()
-    # Read the gyroscope values
     gyroscope_data = mpu6050.get_gyro_data()
     return accelerometer_data, gyroscope_data
 
-def angles():
-    global pitch_angle, roll_angle, yaw_angle, pitch_angle_gyroscope, roll_angle_gyroscope
-    measure_start_time = time.time()
-    accelerometer_data, gyroscope_data = read_sensor_data()
-    #Get angular velocities
-    pitch_data = gyroscope_data['x']
-    roll_data = gyroscope_data['y']
-    yaw_data = gyroscope_data['z']
+def accel_pitch_roll(accelerometer_data):
+    ax = accelerometer_data['x']
+    ay = accelerometer_data['y']
+    az = accelerometer_data['z']
 
-    #Get accelerations
-    accelerometer_x = accelerometer_data['x']
-    accelerometer_y = accelerometer_data['y']
-    accelerometer_z = accelerometer_data['z']
+    pitch = math.atan2(ay, math.sqrt(ax**2 + az**2)) * 180 / math.pi
+    roll = math.atan2(-ax, math.sqrt(ay**2 + az**2)) * 180 / math.pi
+    return pitch, roll
 
-    #Calculate pitch and roll  using accelerometer data
-    pitch_angle_accelerometer = math.degrees(math.atan2(accelerometer_y, math.sqrt(accelerometer_x**2 + accelerometer_z**2)))
-    print(pitch_angle_accelerometer)
-    roll_angle_accelerometer = math.degrees(math.atan2(accelerometer_x, math.sqrt(accelerometer_y**2 + accelerometer_z**2)))
+def main():
+    # Create a new Mpu6050 object
+    mpu6050 = mpu6050.mpu6050(0x68)
 
-    #Calculate pitch and roll using gyroscope data
-    dt = time.time() - measure_start_time
-    pitch_angle_gyroscope += pitch_data * dt
-    roll_angle_gyroscope += roll_data * dt
+    dt = 0.001 # Time step
+    process_noise = 0.01
+    measurement_noise = 0.1
 
-    #Combine accelerometer and gyroscope data for final angle
-    pitch_angle = alpha * pitch_angle_gyroscope + (1 - alpha) * pitch_angle_accelerometer
-    roll_angle = alpha * roll_angle_gyroscope + (1 - alpha) * roll_angle_accelerometer
+    pitch_filter = KalmanFilter(dt, process_noise, measurement_noise)
+    roll_filter = KalmanFilter(dt, process_noise, measurement_noise)
 
-    return pitch_angle, roll_angle
+    while True:
+        #Read data
+        accelerometer_data, gyroscope_data = read_sensor_data()
 
-# Start a while loop to continuously read the sensor data
-while True:
-    # Read the sensor data
-    pitch_angle, roll_angle = angles()
-    # Print the sensor data every second
-    if time.time() - start_time >= 1:
-        print(f"Pitch: {pitch_angle}")
-        print(f"Roll: {roll_angle}")
-        start_time = time.time()
-    
-    time.sleep(delay)
+        #Calculate pitch and roll from accelerometer data
+        acc_pitch, acc_roll = accel_pitch_roll(accelerometer_data)
+
+        # Predict using gyroscope data
+        pitch_filter.predict()
+        roll_filter.predict()
+
+        # Update using accelerometer data
+        pitch_filter.update(np.array([[acc_pitch]]))
+        roll_filter.update(np.array([[acc_roll]]))
+
+        # Get filtered pitch and roll
+        pitch = pitch_filter.get_state()
+        roll = roll_filter.get_state()
+
+        print(f"Pitch: {pitch}, Roll: {roll}")
+
+        time.sleep(dt)
+
+if __name__ == "__main__":
+    main()
