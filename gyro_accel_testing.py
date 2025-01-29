@@ -10,6 +10,7 @@ alpha = 0.98 #Fliter constant, determines split between accelerometer and gyrosc
 pitch_angle = 0
 roll_angle = 0
 yaw_angle = 0
+print_count = 0 #Counter to print data every 1000 iterations
 
 # Define a function to read the sensor data
 def read_sensor_data():
@@ -50,8 +51,10 @@ while True:
     # Read the sensor data
     pitch_angle, roll_angle, yaw_angle = angles()
     # Print the sensor data
-    print("Pitch: ", pitch_angle)
-    print("Roll: ", roll_angle)
-    print("Yaw: ", yaw_angle)
+    if (print_count/1000)%1 == 0:
+        print(f"Pitch: {pitch_angle}")
+        print(f"Roll: {roll_angle}")
+        print(f"Yaw: {yaw_angle}\n")
     
+    print_count += 1
     time.sleep(delay)
