@@ -79,8 +79,8 @@ def json_write(pitch, roll, accelerometer_data, gyroscope_data, start_time):
             "gz": gyroscope_data['z'],
         },
     }
-    #with open(f"data_recordings/{time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())}.json", "w") as file:
-        #json.dump(data, file)
+    with open(f"data_recordings/{time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())}.json", "w") as file:
+        json.dump(data, file)
 
 def main():
     start_time = time.time()
@@ -92,7 +92,7 @@ def main():
     pitch_filter = KalmanFilter(dt, process_noise, measurement_noise)
     roll_filter = KalmanFilter(dt, process_noise, measurement_noise)
 
-    while True:
+    for e in range(10):
         #Read data
         accelerometer_data, gyroscope_data = read_sensor_data()
 
