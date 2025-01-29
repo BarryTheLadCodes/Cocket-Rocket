@@ -11,6 +11,7 @@ pitch_angle = 0
 roll_angle = 0
 yaw_angle = 0
 print_count = 0 #Counter to print data every 1000 iterations
+start_time = time.time()
 
 # Define a function to read the sensor data
 def read_sensor_data():
@@ -49,11 +50,11 @@ def angles():
 while True:
     # Read the sensor data
     pitch_angle, roll_angle, yaw_angle = angles()
-    # Print the sensor data
-    if print_count % 1000 == 0:
+    # Print the sensor data every second
+    if time.time() - start_time >= 1:
         print(f"Pitch: {pitch_angle}")
         print(f"Roll: {roll_angle}")
         print(f"Yaw: {yaw_angle}\n")
+        start_time = time.time()
     
-    print_count += 1
     time.sleep(delay)
