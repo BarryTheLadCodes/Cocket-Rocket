@@ -20,6 +20,7 @@ def read_sensor_data():
     return accelerometer_data, gyroscope_data
 
 def angles():
+    global pitch_angle, roll_angle, yaw_angle
     accelerometer_data, gyroscope_data = read_sensor_data()
     #Get angular velocities
     pitch_data = gyroscope_data['x']
