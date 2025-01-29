@@ -6,7 +6,7 @@ import time
 mpu6050 = mpu6050.mpu6050(0x68)
 
 delay = 0.001
-alpha = 0.98 #Fliter constant, determines split between accelerometer and gyroscope data
+alpha = 1 #Fliter constant, determines split between accelerometer and gyroscope data
 pitch_angle = 0
 roll_angle = 0
 yaw_angle = 0
@@ -39,7 +39,6 @@ def angles():
 
     #Combine accelerometer and gyroscope data for final angle
     pitch_angle = alpha * (pitch_angle + pitch_data * delay) + (1 - alpha) * pitch_angle_accelerometer
-    print(pitch_angle)
     roll_angle = alpha * (roll_angle + roll_data * delay) + (1 - alpha) * roll_angle_accelerometer
 
     #Integrate yaw angular velocity with time to get yaw angle approximation
