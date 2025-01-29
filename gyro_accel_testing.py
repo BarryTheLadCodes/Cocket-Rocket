@@ -6,7 +6,7 @@ import time
 mpu6050 = mpu6050.mpu6050(0x68)
 
 delay = 0.001
-alpha = 0.98 #Fliter constant, determines split between accelerometer and gyroscope data
+alpha = 1 #Fliter constant, determines split between accelerometer and gyroscope data
 pitch_angle_gyroscope = 0
 roll_angle_gyroscope = 0
 pitch_angle = 0
@@ -36,12 +36,11 @@ def angles():
     accelerometer_z = accelerometer_data['z']
 
     #Calculate pitch and roll  using accelerometer data
-    pitch_angle_accelerometer = math.degrees(math.atan(accelerometer_y/math.sqrt(accelerometer_x**2 + accelerometer_z**2)))
-    roll_angle_accelerometer = math.degrees(math.atan(accelerometer_x/math.sqrt(accelerometer_y**2 + accelerometer_z**2)))
+    pitch_angle_accelerometer = math.degrees(math.atan2(accelerometer_y, math.sqrt(accelerometer_x**2 + accelerometer_z**2)))
+    roll_angle_accelerometer = math.degrees(math.atan2(accelerometer_x, math.sqrt(accelerometer_y**2 + accelerometer_z**2)))
 
     #Calculate pitch and roll using gyroscope data
     pitch_angle_gyroscope += pitch_data * delay
-    print(pitch_data*delay)
     roll_angle_gyroscope += roll_data * delay
 
     #Combine accelerometer and gyroscope data for final angle
