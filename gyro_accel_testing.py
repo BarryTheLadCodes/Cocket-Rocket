@@ -39,7 +39,7 @@ def angles():
 
     #Combine accelerometer and gyroscope data for final angle
     pitch_angle = alpha * (pitch_angle + pitch_data * delay) + (1 - alpha) * pitch_angle_accelerometer
-    print(pitch_angle)
+    print(pitch_angle_accelerometer)
     roll_angle = alpha * (roll_angle + roll_data * delay) + (1 - alpha) * roll_angle_accelerometer
 
     #Integrate yaw angular velocity with time to get yaw angle approximation
