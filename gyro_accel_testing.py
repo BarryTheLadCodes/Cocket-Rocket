@@ -61,6 +61,6 @@ while True:
         print(f"Pitch: {pitch_angle}")
         print(f"Roll: {roll_angle}")
         print(f"Yaw: {yaw_angle}\n")
-    start_time = time.time()
+        start_time = time.time()
     
     time.sleep(delay)
