@@ -1,12 +1,12 @@
 import math
-import mpu6050
+import mpu6050 # type: ignore
 import time
 
 # Create a new Mpu6050 object
 mpu6050 = mpu6050.mpu6050(0x68)
 
-delay = 0.0001
-alpha = 1 #Fliter constant, determines split between accelerometer and gyroscope data
+delay = 0.001
+alpha = 0.98 #Fliter constant, determines split between accelerometer and gyroscope data
 pitch_angle = 0
 roll_angle = 0
 yaw_angle = 0
@@ -50,10 +50,9 @@ while True:
     # Read the sensor data
     pitch_angle, roll_angle, yaw_angle = angles()
     # Print the sensor data every second
-    if time.time() - start_time >= 1:
-        print(f"Pitch: {pitch_angle}")
-        print(f"Roll: {roll_angle}")
-        print(f"Yaw: {yaw_angle}\n")
-        start_time = time.time()
+    print(f"Pitch: {pitch_angle}")
+    print(f"Roll: {roll_angle}")
+    print(f"Yaw: {yaw_angle}\n")
+    start_time = time.time()
     
     time.sleep(delay)
