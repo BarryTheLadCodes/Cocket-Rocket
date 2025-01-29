@@ -50,7 +50,7 @@ while True:
     # Read the sensor data
     pitch_angle, roll_angle, yaw_angle = angles()
     # Print the sensor data
-    if (print_count/1000)%1 == 0:
+    if print_count % 1000 == 0:
         print(f"Pitch: {pitch_angle}")
         print(f"Roll: {roll_angle}")
         print(f"Yaw: {yaw_angle}\n")
