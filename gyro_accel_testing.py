@@ -41,7 +41,7 @@ def angles():
 
     #Calculate pitch and roll using gyroscope data
     pitch_angle_gyroscope += pitch_data * delay
-    print(pitch_angle_gyroscope)
+    print(pitch_data*delay)
     roll_angle_gyroscope += roll_data * delay
 
     #Combine accelerometer and gyroscope data for final angle
