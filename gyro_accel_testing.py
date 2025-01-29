@@ -32,6 +32,7 @@ class KalmanFilter:
         self.P = np.eye(2)
     
     def predict(self, gyroscope_data):
+        # Update the state prediction using gyroscope data (angular velocity)
         self.x[0] += self.x[1] * self.dt + gyroscope_data * self.dt  # Update angle prediction
         self.x[1] += gyroscope_data * self.dt  # Update angular velocity prediction
         # Predict covariance
