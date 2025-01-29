@@ -5,8 +5,8 @@ import time
 # Create a new Mpu6050 object
 mpu6050 = mpu6050.mpu6050(0x68)
 
-delay = 0.001
 alpha = 0.98 #Fliter constant, determines split between accelerometer and gyroscope data
+delay = 0.001 #Delay between readings
 pitch_angle_gyroscope = 0
 roll_angle_gyroscope = 0
 pitch_angle = 0
@@ -24,6 +24,7 @@ def read_sensor_data():
 
 def angles():
     global pitch_angle, roll_angle, yaw_angle, pitch_angle_gyroscope, roll_angle_gyroscope
+    measure_start_time = time.time()
     accelerometer_data, gyroscope_data = read_sensor_data()
     #Get angular velocities
     pitch_data = gyroscope_data['x']
@@ -38,29 +39,26 @@ def angles():
     #Calculate pitch and roll  using accelerometer data
     pitch_angle_accelerometer = math.degrees(math.atan2(accelerometer_y, math.sqrt(accelerometer_x**2 + accelerometer_z**2)))
     roll_angle_accelerometer = math.degrees(math.atan2(accelerometer_x, math.sqrt(accelerometer_y**2 + accelerometer_z**2)))
-    print(pitch_angle_accelerometer)
 
     #Calculate pitch and roll using gyroscope data
-    pitch_angle_gyroscope += pitch_data * delay
-    roll_angle_gyroscope += roll_data * delay
+    dt = time.time() - measure_start_time
+    pitch_angle_gyroscope += pitch_data * dt
+    roll_angle_gyroscope += roll_data * dt
 
     #Combine accelerometer and gyroscope data for final angle
     pitch_angle = alpha * pitch_angle_gyroscope + (1 - alpha) * pitch_angle_accelerometer
     roll_angle = alpha * roll_angle_gyroscope + (1 - alpha) * roll_angle_accelerometer
 
-    #Integrate yaw angular velocity with time to get yaw angle approximation
-    yaw_angle += yaw_data * delay
-    return pitch_angle, roll_angle, yaw_angle
+    return pitch_angle, roll_angle
 
 # Start a while loop to continuously read the sensor data
 while True:
     # Read the sensor data
-    pitch_angle, roll_angle, yaw_angle = angles()
+    pitch_angle, roll_angle = angles()
     # Print the sensor data every second
     if time.time() - start_time >= 1:
         print(f"Pitch: {pitch_angle}")
         print(f"Roll: {roll_angle}")
-        print(f"Yaw: {yaw_angle}\n")
         start_time = time.time()
     
     time.sleep(delay)
