@@ -43,7 +43,7 @@ def angles():
 
     #Integrate yaw angular velocity with time to get yaw angle approximation
     yaw_angle += yaw_data * delay
-
+    print("test")
     return pitch_angle, roll_angle, yaw_angle
 
 # Start a while loop to continuously read the sensor data
