@@ -25,6 +25,7 @@ def angles():
     accelerometer_data, gyroscope_data = read_sensor_data()
     #Get angular velocities
     pitch_data = gyroscope_data['x']
+    print(pitch_data)
     roll_data = gyroscope_data['y']
     yaw_data = gyroscope_data['z']
 
@@ -50,9 +51,10 @@ while True:
     # Read the sensor data
     pitch_angle, roll_angle, yaw_angle = angles()
     # Print the sensor data every second
-    print(f"Pitch: {pitch_angle}")
-    print(f"Roll: {roll_angle}")
-    print(f"Yaw: {yaw_angle}\n")
+    if time.time() - start_time >= 1:
+        print(f"Pitch: {pitch_angle}")
+        print(f"Roll: {roll_angle}")
+        print(f"Yaw: {yaw_angle}\n")
     start_time = time.time()
     
     time.sleep(delay)
