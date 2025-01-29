@@ -3,6 +3,9 @@ import mpu6050 # type: ignore
 import time
 import numpy as np
 
+# Create a new Mpu6050 object
+mpu6050 = mpu6050.mpu6050(0x68)
+
 class KalmanFilter:
     def __init__(self, dt, process_noise, measurement_noise):
         self.dt = dt  # Time step
@@ -60,9 +63,6 @@ def accel_pitch_roll(accelerometer_data):
     return pitch, roll
 
 def main():
-    # Create a new Mpu6050 object
-    mpu6050 = mpu6050.mpu6050(0x68)
-
     dt = 0.001 # Time step
     process_noise = 0.01
     measurement_noise = 0.1
