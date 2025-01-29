@@ -2,6 +2,7 @@ import math
 import mpu6050 # type: ignore
 import time
 import json
+import os
 import numpy as np
 
 # Create a new Mpu6050 object
@@ -64,20 +65,21 @@ def accel_pitch_roll(accelerometer_data):
     roll = math.atan2(-ax, math.sqrt(ay**2 + az**2)) * 180 / math.pi
     return pitch, roll
 
-def json_write(pitch, roll, ax, ay, az, gx, gy, gz, start_time):
+def json_write(pitch, roll, accelerometer_data, gyroscope_data, start_time):
+    os.makedirs("data_recordings", exist_ok=True)
     data = {
-        f"time.time() - start_time": {
+        f"{time.time() - start_time}": {
             "pitch": pitch,
             "roll": roll,
-            "ax": ax,
-            "ay": ay,
-            "az": az,
-            "gx": gx,
-            "gy": gy,
-            "gz": gz
+            "ax": accelerometer_data['x'],
+            "ay": accelerometer_data['y'],
+            "az": accelerometer_data['z'],
+            "gx": gyroscope_data['x'],
+            "gy": gyroscope_data['y'],
+            "gz": gyroscope_data['z'],
         },
     }
-    with open(f"data_recordings/{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}.json", "w") as file:
+    with open(f"data_recordings/{time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())}.json", "w") as file:
         json.dump(data, file)
 
 def main():
@@ -110,6 +112,9 @@ def main():
         roll = roll_filter.get_state()
 
         print(f"Pitch: {pitch}, Roll: {roll}")
+
+        # Write data to json file
+        json_write(pitch, roll, accelerometer_data, gyroscope_data, start_time)
 
         time.sleep(dt)
 
