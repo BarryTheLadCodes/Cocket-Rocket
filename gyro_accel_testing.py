@@ -32,8 +32,8 @@ def angles():
     accelerometer_z = accelerometer_data['z']
 
     #Calculate pitch and roll estimations using accelerometer data
-    pitch_angle_accelerometer = math.arctan(accelerometer_y/math.sqrt(accelerometer_x**2 + accelerometer_z**2))
-    roll_angle_accelerometer = math.arctan(accelerometer_x/math.sqrt(accelerometer_y**2 + accelerometer_z**2))
+    pitch_angle_accelerometer = math.atan(accelerometer_y/math.sqrt(accelerometer_x**2 + accelerometer_z**2))
+    roll_angle_accelerometer = math.atan(accelerometer_x/math.sqrt(accelerometer_y**2 + accelerometer_z**2))
 
     #Combine accelerometer and gyroscope data for final angle
     pitch_angle = alpha * (pitch_angle + gyroscope_data['x'] * delay) + (1 - alpha) * pitch_angle_accelerometer
