@@ -38,6 +38,7 @@ def angles():
     #Calculate pitch and roll  using accelerometer data
     pitch_angle_accelerometer = math.degrees(math.atan2(accelerometer_y, math.sqrt(accelerometer_x**2 + accelerometer_z**2)))
     roll_angle_accelerometer = math.degrees(math.atan2(accelerometer_x, math.sqrt(accelerometer_y**2 + accelerometer_z**2)))
+    print(pitch_angle_accelerometer)
 
     #Calculate pitch and roll using gyroscope data
     pitch_angle_gyroscope += pitch_data * delay
