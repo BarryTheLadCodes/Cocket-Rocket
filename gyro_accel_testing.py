@@ -6,7 +6,7 @@ import time
 mpu6050 = mpu6050.mpu6050(0x68)
 
 delay = 0.001
-alpha = 1 #Fliter constant, determines split between accelerometer and gyroscope data
+alpha = 0.98 #Fliter constant, determines split between accelerometer and gyroscope data
 pitch_angle_gyroscope = 0
 roll_angle_gyroscope = 0
 pitch_angle = 0
