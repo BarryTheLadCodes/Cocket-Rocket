@@ -14,22 +14,22 @@ class KalmanFilter:
         self.measurement_noise = measurement_noise
         
         # State transition matrix
-        self.A = np.array([[1, -dt], [0, 1]])
+        self.A = np.array([[1, -dt], [0, 1]], dtype=np.float64)
         
         # Measurement matrix
-        self.H = np.array([[1, 0]])
+        self.H = np.array([[1, 0]], dtype=np.float64)
         
         # Process noise covariance
-        self.Q = np.array([[process_noise, 0], [0, process_noise]])
+        self.Q = np.array([[process_noise, 0], [0, process_noise]], dtype=np.float64)
         
         # Measurement noise covariance
-        self.R = np.array([[measurement_noise]])
+        self.R = np.array([[measurement_noise]], dtype=np.float64)
         
-        # State estimate
-        self.x = np.array([[0], [0]])
+        # State estimate initialized as float64
+        self.x = np.array([[0.0], [0.0]], dtype=np.float64)  # Ensuring it's float64
         
         # Estimate covariance
-        self.P = np.eye(2)
+        self.P = np.eye(2, dtype=np.float64)
     
     def predict(self, gyroscope_data):
         # Update the state prediction using gyroscope data (angular velocity)
