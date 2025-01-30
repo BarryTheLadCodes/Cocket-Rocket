@@ -88,6 +88,7 @@ def json_write(pitch, roll, accelerometer_data, gyroscope_data, start_time, date
     
     print(old_data)
     new_data = old_data.append(new_data)
+    print(new_data)
     with open(file_path, "a") as file:
         json.dump(new_data, file)
 
