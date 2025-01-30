@@ -15,7 +15,7 @@ class KalmanFilter:
         self.measurement_noise = measurement_noise
         
         # State transition matrix
-        self.A = np.array([[1, -dt], [0, 1]], dtype=np.float64)
+        self.A = np.array([[1, dt], [0, 1]], dtype=np.float64)
         
         # Measurement matrix
         self.H = np.array([[1, 0]], dtype=np.float64)
