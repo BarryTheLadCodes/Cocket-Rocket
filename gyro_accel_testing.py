@@ -66,7 +66,7 @@ def accel_pitch_roll(accelerometer_data):
     roll = math.atan2(-ax, math.sqrt(ay**2 + az**2)) * 180 / math.pi
     return pitch, roll
 
-def json_write(pitch, roll, accelerometer_data, gyroscope_data, start_time):
+def json_write(pitch, roll, accelerometer_data, gyroscope_data, start_time, datetime):
     os.makedirs("data_recordings", exist_ok=True)
     data = {
         f"{time.time() - start_time}": {
@@ -80,11 +80,12 @@ def json_write(pitch, roll, accelerometer_data, gyroscope_data, start_time):
             "gz": gyroscope_data['z'],
         },
     }
-    with open(f"data_recordings/{time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())}.json", "w") as file:
+    with open(f"~/Documents/Cocket Rocket/data_recordings/{datetime}.json", "w") as file:
         json.dump(data, file)
 
 def main():
     start_time = time.time()
+    datetime = time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())
 
     dt = 0.001 # Time step
     process_noise = 0.01
@@ -115,7 +116,7 @@ def main():
         print(f"Pitch: {pitch}, Roll: {roll}")
 
         # Write data to json file
-        json_write(pitch, roll, accelerometer_data, gyroscope_data, start_time)
+        json_write(pitch, roll, accelerometer_data, gyroscope_data, start_time, datetime)
 
         time.sleep(dt)
 
