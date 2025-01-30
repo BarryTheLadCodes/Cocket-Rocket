@@ -92,7 +92,7 @@ def main():
     pitch_filter = KalmanFilter(dt, process_noise, measurement_noise)
     roll_filter = KalmanFilter(dt, process_noise, measurement_noise)
 
-    for e in range(10):
+    while True:
         #Read data
         accelerometer_data, gyroscope_data = read_sensor_data()
 
