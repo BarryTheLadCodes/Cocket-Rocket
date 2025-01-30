@@ -76,7 +76,7 @@ def json_write(pitch, roll, accelerometer_data, gyroscope_data, start_time, date
             "gx": gyroscope_data['x'],
             "gy": gyroscope_data['y'],
             "gz": gyroscope_data['z']
-        }
+        },
     }
     file_path = os.path.expanduser(f"~/Documents/Cocket Rocket/data_recordings/{datetime}.json")
 
@@ -88,7 +88,7 @@ def json_write(pitch, roll, accelerometer_data, gyroscope_data, start_time, date
     
     data.append(new_data)
     with open(file_path, "a") as file:
-        json.dump(data, file)
+        json.dump(data, file, indent=2)
 
 def main():
     os.makedirs(os.path.expanduser("~/Documents/Cocket Rocket/data_recordings"), exist_ok=True)
