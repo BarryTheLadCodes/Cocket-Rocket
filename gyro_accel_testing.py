@@ -5,6 +5,7 @@ import json
 import os
 import numpy as np
 
+#test
 # Create a new Mpu6050 object
 mpu6050 = mpu6050.mpu6050(0x68)
 
