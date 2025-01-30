@@ -79,7 +79,7 @@ def json_write(pitch, roll, accelerometer_data, gyroscope_data, start_time, date
         },
     }
     print("E")
-    with open(f"~/Documents/Cocket Rocket/data_recordings/{datetime}.json", "a") as file:
+    with open(f"/~/Documents/Cocket Rocket/data_recordings/{datetime}.json", "a") as file:
         json.dump(data, file)
 
 def main():
