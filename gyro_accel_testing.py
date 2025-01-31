@@ -16,6 +16,8 @@ class KalmanFilter:
         
         # State transition matrix
         self.A = np.array([[1, dt], [0, 1]], dtype=np.float64)
+
+        self.B = np.array([[dt], [dt]], dtype=np.float64)
         
         # Measurement matrix
         self.H = np.array([[1, 0]], dtype=np.float64)
@@ -33,17 +35,16 @@ class KalmanFilter:
         self.P = np.eye(2, dtype=np.float64)
     
     def predict(self, gyroscope_data):
-        # Update the state prediction using gyroscope data (angular velocity)
-        self.x[0] += self.x[1] * self.dt + gyroscope_data * self.dt  # Update angle prediction
-        self.x[1] += gyroscope_data * self.dt  # Update angular velocity prediction
+        # Update the angle and angular velocity prediction using gyroscope data
+        self.x = self.A @ self.x + self.B * gyroscope_data 
         # Predict covariance
         self.P = self.A @ self.P @ self.A.T + self.Q
     
-    def update(self, z):
+    def update(self, acc):
         # Calculate Kalman gain
         K = self.P @ self.H.T @ np.linalg.inv(self.H @ self.P @ self.H.T + self.R)
         # Update state estimate
-        self.x = self.x + K @ (z - self.H @ self.x)
+        self.x = self.x + K @ (acc - self.H @ self.x)
         # Update covariance
         self.P = (np.eye(2) - K @ self.H) @ self.P
     
