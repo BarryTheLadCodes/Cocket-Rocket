@@ -1,11 +1,12 @@
 import smbus # type: ignore
+import busio # type: ignore
+import board # type: ignore
+import adafruit_lps2x # type: ignore
 import time
-import gyro_and_accel
-
-BUS = smbus.SMBus(1)  # Use I2C bus 1
-MPU6050_ADDR = 0x68   # MPU6050 I2C address
 
 def setup_bypass():
+    BUS = smbus.SMBus(1)  # Use I2C bus 1
+    MPU6050_ADDR = 0x68   # MPU6050 I2C address
     # Write 0x00 to PWR_MGMT_1 to wake up the MPU6050
     BUS.write_byte_data(MPU6050_ADDR, 0x6B, 0x00)
     time.sleep(0.1)
@@ -18,4 +19,12 @@ def setup_bypass():
 
     print("Bypass Activated")
 
+lps_i2c = busio.I2C(board.SCL, board.SDA)
+lps22 = adafruit_lps2x.LPS22(lps_i2c)
+
+def read_sensor_data():
+    pressure = lps22.pressure
+    return pressure
+
 setup_bypass()
+print(read_sensor_data())
