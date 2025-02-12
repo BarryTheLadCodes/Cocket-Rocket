@@ -20,7 +20,7 @@ def setup_bypass():
     print("Bypass Activated")
 
 lps_i2c = busio.I2C(board.SCL, board.SDA)
-lps22 = adafruit_lps2x.LPS22(lps_i2c)
+lps22 = adafruit_lps2x.LPS22(lps_i2c, address=0x5C)
 
 def read_sensor_data():
     pressure = lps22.pressure
