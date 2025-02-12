@@ -24,7 +24,7 @@ def measure_altitude():
     pressure = lps22.pressure
     altitude = 44330 * (1 - (pressure / 1013.25) ** 0.190263)
 
-    return altitude
+    return round(altitude)
 
 setup_bypass()
 print(measure_altitude())
