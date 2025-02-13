@@ -68,7 +68,7 @@ def main():
 
         print(f"Pitch: {pitch}°, Roll: {roll}°, Altitude: {altitude}m")
 
-        json_write(pitch, roll, accelerometer_data, gyroscope_data, start_time, datetime)
+        json_write(pitch, roll, altitude, accelerometer_data, gyroscope_data, start_time, datetime)
 
         time.sleep(dt)
 
