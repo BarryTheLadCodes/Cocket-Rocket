@@ -6,8 +6,6 @@ import json
 import numpy as np
 
 def init():
-    altimeter.setup_bypass()
-
     global pitch_filter, roll_filter, start_time, datetime, dt
     os.makedirs(os.path.expanduser("~/Documents/Cocket Rocket/data_recordings"), exist_ok=True)
     start_time = time.time()
