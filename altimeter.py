@@ -27,4 +27,4 @@ def measure_altitude():
     return round(altitude)
 
 setup_bypass()
-print(measure_altitude())
+#print(measure_altitude())
