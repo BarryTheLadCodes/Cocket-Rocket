@@ -17,8 +17,8 @@ def setup_bypass():
     # Write 0x00 to USER_CTRL to disable MPU6050 master mode
     BUS.write_byte_data(MPU6050_ADDR, 0x6A, 0x00)
 
-lps_i2c = busio.I2C(board.SCL, board.SDA)
-lps22 = adafruit_lps2x.LPS22(lps_i2c, address=0x5C)
+#lps_i2c = busio.I2C(board.SCL, board.SDA)
+#lps22 = adafruit_lps2x.LPS22(lps_i2c, address=0x5C)
 
 def measure_altitude():
     pressure = lps22.pressure
