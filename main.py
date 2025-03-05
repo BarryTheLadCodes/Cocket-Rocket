@@ -66,7 +66,7 @@ def main():
         pitch = pitch_filter.get_state()
         roll = roll_filter.get_state()
 
-        print(f"Pitch: {pitch}°, Roll: {roll}°, Altitude: {altitude}m")
+        #print(f"Pitch: {pitch}°, Roll: {roll}°, Altitude: {altitude}m")
 
         json_write(pitch, roll, altitude, accelerometer_data, gyroscope_data, start_time, datetime)
 
