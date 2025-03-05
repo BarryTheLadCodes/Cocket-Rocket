@@ -11,7 +11,7 @@ def init():
     start_time = time.time()
     datetime = time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())
     
-    dt = 0.001 # Time step
+    dt = 0.01 # Time step
     process_noise = 0.01
     measurement_noise = 0.1
 
@@ -70,7 +70,7 @@ def main():
         pitch = pitch_filter.get_state()
         roll = roll_filter.get_state()
 
-        if count % 1000 == 0:
+        if count % 100 == 0:
             print(f"Pitch: {pitch}°, Roll: {roll}°, Altitude: {altitude}m")
 
         json_write(pitch, roll, altitude, accelerometer_data, gyroscope_data, start_time, datetime)
