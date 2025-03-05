@@ -11,7 +11,7 @@ def init():
     start_time = time.time()
     datetime = time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())
     
-    dt = 0.01 # Time step
+    dt = 0.1 # Time step
     process_noise = 0.01
     measurement_noise = 0.1
 
