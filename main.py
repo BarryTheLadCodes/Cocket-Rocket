@@ -50,6 +50,7 @@ def main():
     while True:
         #testing
         count += dt
+        print(count)
 
         #Read data
         accelerometer_data, gyroscope_data = gyro_and_accel.read_sensor_data()
