@@ -18,6 +18,8 @@ def init():
     pitch_filter = gyro_and_accel.KalmanFilter(dt, process_noise, measurement_noise)
     roll_filter = gyro_and_accel.KalmanFilter(dt, process_noise, measurement_noise)
 
+    count = 0
+
 def json_write(pitch, roll, altitude, accelerometer_data, gyroscope_data, start_time, datetime):
     new_data_name = f"{time.time() - start_time}"
     new_data = {
@@ -47,6 +49,9 @@ def main():
     init()
 
     while True:
+        #testing
+        count += dt
+
         #Read data
         accelerometer_data, gyroscope_data = gyro_and_accel.read_sensor_data()
         altitude = altimeter.measure_altitude()
@@ -66,7 +71,8 @@ def main():
         pitch = pitch_filter.get_state()
         roll = roll_filter.get_state()
 
-        #print(f"Pitch: {pitch}°, Roll: {roll}°, Altitude: {altitude}m")
+        if count % 1 == 0:
+            print(f"Pitch: {pitch}°, Roll: {roll}°, Altitude: {altitude}m")
 
         json_write(pitch, roll, altitude, accelerometer_data, gyroscope_data, start_time, datetime)
 
