@@ -50,7 +50,6 @@ def main():
     while True:
         #testing
         count += 1
-
         #Read data
         accelerometer_data, gyroscope_data = gyro_and_accel.read_sensor_data()
         altitude = altimeter.measure_altitude()
