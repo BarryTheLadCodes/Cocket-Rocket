@@ -1,8 +1,6 @@
 import math
 import mpu6050 # type: ignore
 import time
-import json
-import os
 import numpy as np
 
 # Create a new Mpu6050 object
@@ -53,8 +51,10 @@ class KalmanFilter:
 
 # Define a function to read the sensor data
 def read_sensor_data():
+    start = time.monotonic()
     accelerometer_data = mpu6050.get_accel_data()
     gyroscope_data = mpu6050.get_gyro_data()
+    print(f"MPU Time: {time.monotonic() - start}")
     return accelerometer_data, gyroscope_data
 
 def accel_pitch_roll(accelerometer_data):

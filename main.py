@@ -52,7 +52,6 @@ def main():
         count += 1
 
         #Read data
-        start = time.monotonic()
         accelerometer_data, gyroscope_data = gyro_and_accel.read_sensor_data()
         altitude = altimeter.measure_altitude()
 
@@ -70,8 +69,6 @@ def main():
         # Get filtered pitch and roll
         pitch = pitch_filter.get_state()
         roll = roll_filter.get_state()
-
-        print(time.monotonic() - start)
 
         if count % 100 == 0:
             print(f"Pitch: {pitch}°, Roll: {roll}°, Altitude: {altitude}m")
