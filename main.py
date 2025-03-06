@@ -71,7 +71,7 @@ def main():
         pitch = pitch_filter.get_state()
         roll = roll_filter.get_state()
 
-        print(time.monotonic - start)
+        print(time.monotonic() - start)
 
         if count % 100 == 0:
             print(f"Pitch: {pitch}°, Roll: {roll}°, Altitude: {altitude}m")
