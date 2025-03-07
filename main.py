@@ -76,7 +76,7 @@ def main():
         if print_count == 0:
             print_count = 0
             print(f"Pitch: {pitch}°, Roll: {roll}°, Altitude: {altitude}m")
-            json_write(pitch, roll, altitude, accelerometer_data, gyroscope_data, time.time()-json_start_time, datetime)
+            json_write(pitch, roll, altitude, accelerometer_data, gyroscope_data, json_start_time, datetime)
 
         while time.time() - start_time < dt:
             time.sleep(0.001)
