@@ -2,7 +2,6 @@ import gyro_and_accel
 import altimeter
 import os
 import time
-import psutil
 import json
 import numpy as np
 
@@ -11,12 +10,8 @@ def init():
     os.makedirs(os.path.expanduser("~/Documents/Cocket Rocket/data_recordings"), exist_ok=True)
     start_time = time.time()
     datetime = time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())
-
-    # Set process priority to high
-    p = psutil.Process(os.getpid())
-    p.nice(-20)
     
-    dt = 0.01 # Time step
+    dt = 0.02 # Time step
     process_noise = 0.01
     measurement_noise = 0.1
 
