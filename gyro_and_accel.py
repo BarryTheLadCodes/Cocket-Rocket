@@ -6,7 +6,7 @@ import numpy as np
 # Create a new Mpu6050 object
 mpu6050 = mpu6050.mpu6050(0x68)
 #Set sample rate to 1kHz
-mpu6050.bus.write_byte_data(mpu6050.address, 0x19, 0x00)
+#mpu6050.bus.write_byte_data(mpu6050.address, 0x19, 0x00)
 #Disable the digital low-pass filter for lower latency
 mpu6050.bus.write_byte_data(mpu6050.address, 0x1A, 0x00)
 #Set accelerometer range to +-2g
