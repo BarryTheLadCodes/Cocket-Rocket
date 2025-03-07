@@ -49,7 +49,7 @@ def main():
 
     while True:
         # Measure start time of loop
-        start_time = time.time()
+        start_time = time.monotonic()
 
         # Count to only print once a second
         print_count += 1
@@ -78,10 +78,9 @@ def main():
             print(f"Pitch: {pitch}°, Roll: {roll}°, Altitude: {altitude}m")
             json_write(pitch, roll, altitude, accelerometer_data, gyroscope_data, start_time, datetime)
 
-        while time.time() - start_time < dt:
+        while time.monotonic() - start_time < dt:
+            time.sleep(0.001)
             pass
-
-        print(f"Loop time: {time.time() - start_time}")
 
 if __name__ == "__main__":
     main()
