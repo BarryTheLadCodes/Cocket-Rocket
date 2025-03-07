@@ -6,10 +6,11 @@ import json
 import numpy as np
 
 def init():
-    global pitch_filter, roll_filter, start_time, datetime, dt
+    global pitch_filter, roll_filter, json_start_time, datetime, dt
     os.makedirs(os.path.expanduser("~/Documents/Cocket Rocket/data_recordings"), exist_ok=True)
     datetime = time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())
-    
+    json_start__time = time.time()
+
     dt = 0.02 # Time step
     process_noise = 0.01
     measurement_noise = 0.1
@@ -72,10 +73,10 @@ def main():
         pitch = pitch_filter.get_state()
         roll = roll_filter.get_state()
 
-        if print_count == 10:
+        if print_count == 0:
             print_count = 0
             print(f"Pitch: {pitch}°, Roll: {roll}°, Altitude: {altitude}m")
-            json_write(pitch, roll, altitude, accelerometer_data, gyroscope_data, start_time, datetime)
+            json_write(pitch, roll, altitude, accelerometer_data, gyroscope_data, json_start_time, datetime)
 
         while time.time() - start_time < dt:
             time.sleep(0.001)
