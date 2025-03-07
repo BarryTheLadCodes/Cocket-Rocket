@@ -73,7 +73,7 @@ def main():
         pitch = pitch_filter.get_state()
         roll = roll_filter.get_state()
 
-        if print_count == 0:
+        if print_count == 10:
             print_count = 0
             print(f"Pitch: {pitch}°, Roll: {roll}°, Altitude: {altitude}m")
             json_write(pitch, roll, altitude, accelerometer_data, gyroscope_data, json_start_time, datetime)
