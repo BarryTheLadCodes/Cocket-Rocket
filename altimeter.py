@@ -22,8 +22,6 @@ lps_i2c = busio.I2C(board.SCL, board.SDA)
 lps22 = adafruit_lps2x.LPS22(lps_i2c, address=0x5C)
 
 def measure_altitude():
-    start = time.monotonic()
     pressure = lps22.pressure
     altitude = 44330 * (1 - (pressure / 1013.25) ** 0.190263)
-    print(f"LPS Time: {time.monotonic() - start}")
     return round(altitude)
