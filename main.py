@@ -10,6 +10,9 @@ def init():
     os.makedirs(os.path.expanduser("~/Documents/Cocket Rocket/data_recordings"), exist_ok=True)
     start_time = time.time()
     datetime = time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())
+
+    # Set process priority to high
+    os.nice(-20)  
     
     dt = 0.01 # Time step
     process_noise = 0.01
