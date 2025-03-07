@@ -45,11 +45,14 @@ def json_write(pitch, roll, altitude, accelerometer_data, gyroscope_data, start_
 
 def main():
     init()
-    count = 0
+    print_count = 0
 
     while True:
-        #testing
-        count += 1
+        # Measure start time of loop
+        start_time = time.time()
+
+        # Count to only print once a second
+        print_count += 1
 
         #Read data
         accelerometer_data, gyroscope_data = gyro_and_accel.read_sensor_data()
@@ -70,11 +73,16 @@ def main():
         pitch = pitch_filter.get_state()
         roll = roll_filter.get_state()
 
-        if count % 100 == 0:
+        if print_count == 100:
+            print_count = 0
             print(f"Pitch: {pitch}°, Roll: {roll}°, Altitude: {altitude}m")
             json_write(pitch, roll, altitude, accelerometer_data, gyroscope_data, start_time, datetime)
 
-        time.sleep(dt)
+        while time.time() - start_time < dt:
+            time.sleep(0.001)
+            pass
+
+        print(f"Loop time: {time.time() - start_time}")
 
 if __name__ == "__main__":
     main()
