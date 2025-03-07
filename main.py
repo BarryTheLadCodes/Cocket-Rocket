@@ -2,6 +2,7 @@ import gyro_and_accel
 import altimeter
 import os
 import time
+import psutil
 import json
 import numpy as np
 
@@ -12,7 +13,8 @@ def init():
     datetime = time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())
 
     # Set process priority to high
-    os.nice(-20)  
+    p = psutil.Process(os.getpid())
+    p.nice(psutil.HIGH_PRIORITY_CLASS)
     
     dt = 0.01 # Time step
     process_noise = 0.01
