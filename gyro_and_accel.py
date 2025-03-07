@@ -73,6 +73,7 @@ def read_sensor_data():
         'y': gy,
         'z': gz
     }
+    print(accelerometer_data, gyroscope_data)
     return accelerometer_data, gyroscope_data
 
 def accel_pitch_roll(accelerometer_data):
