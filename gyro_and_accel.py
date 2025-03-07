@@ -57,12 +57,12 @@ class KalmanFilter:
 def read_sensor_data():
     start = time.monotonic()
     raw_data = mpu6050.bus.read_i2c_block_data(mpu6050.address, 0x3B, 14)  # Read 14 bytes at once
-    ax = (raw_data[0] << 8) | raw_data[1]
-    ay = (raw_data[2] << 8) | raw_data[3]
-    az = (raw_data[4] << 8) | raw_data[5]
-    gx = (raw_data[8] << 8) | raw_data[9]
-    gy = (raw_data[10] << 8) | raw_data[11]
-    gz = (raw_data[12] << 8) | raw_data[13]
+    ax = (((raw_data[0] << 8) | raw_data[1])/16384)*9.80665
+    ay = (((raw_data[2] << 8) | raw_data[3])/16384)*9.80665
+    az = (((raw_data[4] << 8) | raw_data[5])/16384)*9.80665
+    gx = ((raw_data[8] << 8) | raw_data[9])/131
+    gy = ((raw_data[10] << 8) | raw_data[11])/131
+    gz = ((raw_data[12] << 8) | raw_data[13])/131
     print(f"MPU Time: {time.monotonic() - start}")
     accelerometer_data = {
         'x': ax,
