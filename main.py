@@ -79,7 +79,6 @@ def main():
             json_write(pitch, roll, altitude, accelerometer_data, gyroscope_data, start_time, datetime)
 
         while time.time() - start_time < dt:
-            time.sleep(0.001)
             pass
 
         print(f"Loop time: {time.time() - start_time}")
