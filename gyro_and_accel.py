@@ -9,6 +9,10 @@ mpu6050 = mpu6050.mpu6050(0x68)
 mpu6050.bus.write_byte_data(mpu6050.address, 0x19, 0x00)
 #Disable the digital low-pass filter for lower latency
 mpu6050.bus.write_byte_data(mpu6050.address, 0x1A, 0x00)
+#Set accelerometer range to +-2g
+mpu6050.bus.write_byte_data(mpu6050.address, 0x1C, 0x00)
+#Set gyroscope range to +-250 degrees per second
+mpu6050.bus.write_byte_data(mpu6050.address, 0x1B, 0x00)
 
 class KalmanFilter:
     def __init__(self, dt, process_noise, measurement_noise):
@@ -57,12 +61,29 @@ class KalmanFilter:
 def read_sensor_data():
     # Read raw data directly from i2c as a block to make it more efficient
     raw_data = mpu6050.bus.read_i2c_block_data(mpu6050.address, 0x3B, 14)  # Read 14 bytes at once
-    ax = (((raw_data[0] << 8) | raw_data[1])/16384)*9.80665
-    ay = (((raw_data[2] << 8) | raw_data[3])/16384)*9.80665
-    az = (((raw_data[4] << 8) | raw_data[5])/16384)*9.80665
-    gx = ((raw_data[8] << 8) | raw_data[9])/131
-    gy = ((raw_data[10] << 8) | raw_data[11])/131
-    gz = ((raw_data[12] << 8) | raw_data[13])/131
+    ax = (raw_data[0] << 8) | raw_data[1]
+    ay = (raw_data[2] << 8) | raw_data[3]
+    az = (raw_data[4] << 8) | raw_data[5]
+    gx = (raw_data[8] << 8) | raw_data[9]
+    gy = (raw_data[10] << 8) | raw_data[11]
+    gz = (raw_data[12] << 8) | raw_data[13]
+
+    # Handling two's complement for signed values
+    ax = ax - 65536 if ax > 32767 else ax
+    ay = ay - 65536 if ay > 32767 else ay
+    az = az - 65536 if az > 32767 else az
+    gx = gx - 65536 if gx > 32767 else gx
+    gy = gy - 65536 if gy > 32767 else gy
+    gz = gz - 65536 if gz > 32767 else gz
+    
+    #Convert to m/s^2 and °/s
+    ax = (ax / 16384) * 9.80665
+    ay = (ay / 16384) * 9.80665
+    az = (az / 16384) * 9.80665
+    gx = (gx / 131)
+    gy = (gy / 131)
+    gz = (gz / 131)
+
     accelerometer_data = {
         'x': ax,
         'y': ay,
