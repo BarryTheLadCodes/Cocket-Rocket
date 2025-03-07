@@ -14,7 +14,7 @@ def init():
 
     # Set process priority to high
     p = psutil.Process(os.getpid())
-    p.nice(psutil.HIGH_PRIORITY_CLASS)
+    p.nice(-20)
     
     dt = 0.01 # Time step
     process_noise = 0.01
