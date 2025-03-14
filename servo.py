@@ -1,4 +1,5 @@
-from gpiozero import AngularServo, PiGPIOFactory  # type: ignore
+from gpiozero import AngularServo  # type: ignore
+from gpiozero.pins.pigpio import PiGPIOFactory  # type: ignore
 import time
 
 # Set pin 21 as servo1 output
