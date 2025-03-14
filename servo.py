@@ -1,23 +1,23 @@
-from gpiozero import AngularServo  # type: ignore
-from gpiozero.pins.pigpio import PiGPIOFactory  # type: ignore
+import RPi.GPIO as GPIO # type: ignore
 import time
 
 # Set pin 21 as servo1 output
-SERVO_1_PIN = 21
-servo_1 = AngularServo(SERVO_1_PIN, min_angle=-90, max_angle=90, pin_factory=PiGPIOFactory())
-#while True:
-#    angle = -90
-#    servo_1.angle = angle
-#    time.sleep(0.5)
-#    for n in range (18):
-#        angle += 10
-#        servo_1.angle = angle
-#        time.sleep(0.5)
+SERVO_1_PIN = 40
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(SERVO_1_PIN, GPIO.OUT)
+
+# Setup PWM at 50Hz
+SERVO_1 = GPIO.PWM(SERVO_1_PIN, 50)
+SERVO_1.start(0)
+
+def servo_write_angle(angle):
+    """Writes angle +-90 degrees to servo"""
+    angle = max(min(angle, 90), -90)  # Clamp angle between -90 and 90
+    duty_cycle = angle / 18 + 2
+    SERVO_1.ChangeDutyCycle(duty_cycle)
 
 while True:
-    servo_1.angle = -90
-    time.sleep(2)
-    servo_1.angle = 0
-    time.sleep(2)
-    servo_1.angle = 90
-    time.sleep(2)
+    servo_write_angle(-90)
+    time.sleep(1)
+    servo_write_angle(90)
+    time.sleep(1)
