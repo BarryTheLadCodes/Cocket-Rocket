@@ -3,7 +3,7 @@ import time
 
 # Set pin 21 as servo1 output
 SERVO_1_PIN = 21
-servo_1 = pigpio.pi()
+servo_1 = pigpio.pi('localhost', 8888)
 
 if not servo_1.connected:
     print("Failed to connect to pigpio daemon!")
