@@ -19,7 +19,7 @@ def servo_write_angle(angle):
     # Convert angle from -90 to 90 degrees to 0 to 180 degrees
     angle = angle + 90
     duty_cycle = min_duty + (angle / 180.0) * (max_duty - min_duty)
-    return duty_cycle
+    SERVO_1.ChangeDutyCycle(duty_cycle)
 
 while True:
     servo_write_angle(-90)
