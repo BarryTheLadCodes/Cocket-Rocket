@@ -26,12 +26,12 @@ def servo_write_angle(angle, servo):
     elif servo == 2:
         servo_2.set_servo_pulsewidth(SERVO_2_PIN, (angle / 180) * (max_pulse - min_pulse) + min_pulse)
 while True:
-    servo_write_angle(-90, 1)
-    servo_write_angle(90, 2)
+    servo_write_angle(-8.5, 1)
+    servo_write_angle(8.5, 2)
     time.sleep(1)
     servo_write_angle(0, 1)
     servo_write_angle(0, 2)
     time.sleep(1)
-    servo_write_angle(90,1)
-    servo_write_angle(-90,2)
+    servo_write_angle(8.5,1)
+    servo_write_angle(-8.5,2)
     time.sleep(1)
