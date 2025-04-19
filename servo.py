@@ -2,36 +2,39 @@ import pigpio # type: ignore
 import time
 
 # Set pin 21 as servo1 output
-SERVO_1_PIN = 21
-SERVO_2_PIN = 20
-servo_1 = pigpio.pi('localhost', 8888)
-servo_2 = pigpio.pi('localhost', 8888)
+SERVO_X_PIN = 20
+SERVO_Y_PIN = 21
+SERVO_X_OFFSET = 8
+SERVO_Y_OFFSET = -4
+servo_X = pigpio.pi('localhost', 8888)
+servo_Y = pigpio.pi('localhost', 8888)
 
-if not servo_1.connected or not servo_2.connected:
+if not servo_X.connected or not servo_X.connected:
     print("Failed to connect to pigpio daemon!")
     exit()
 
-servo_1.set_PWM_frequency(SERVO_1_PIN, 50)  # Set frequency to 50Hz
-servo_1.set_servo_pulsewidth(SERVO_1_PIN, 1500) # Set initial pulse width to 1.5ms (neutral position)
-servo_2.set_PWM_frequency(SERVO_2_PIN, 50)  # Set frequency to 50Hz
-servo_2.set_servo_pulsewidth(SERVO_2_PIN, 1500) # Set initial pulse width to 1.5ms (neutral position)
+servo_X.set_PWM_frequency(SERVO_X_PIN, 50)  # Set frequency to 50Hz
+servo_X.set_servo_pulsewidth(SERVO_X_PIN, 1500) # Set initial pulse width to 1.5ms (neutral position)
+servo_Y.set_PWM_frequency(SERVO_Y_PIN, 50)  # Set frequency to 50Hz
+servo_Y.set_servo_pulsewidth(SERVO_Y_PIN, 1500) # Set initial pulse width to 1.5ms (neutral position)
 
 def servo_write_angle(angle, servo):
     min_pulse = 1000
     max_pulse = 2000
     # Convert angle from -90 to 90 degrees to 0 to 180 degrees
     angle = angle*2 + 90
-    if servo == 1:
-        servo_1.set_servo_pulsewidth(SERVO_1_PIN, (angle / 180) * (max_pulse - min_pulse) + min_pulse)
-    elif servo == 2:
-        servo_2.set_servo_pulsewidth(SERVO_2_PIN, (angle / 180) * (max_pulse - min_pulse) + min_pulse)
+    if servo == "X":
+        servo_X.set_servo_pulsewidth(SERVO_X_PIN, ((angle+SERVO_X_OFFSET) / 180) * (max_pulse - min_pulse) + min_pulse)
+    elif servo == "Y":
+        servo_Y.set_servo_pulsewidth(SERVO_Y_PIN, ((angle+SERVO_Y_OFFSET) / 180) * (max_pulse - min_pulse) + min_pulse)
+
 while True:
-    servo_write_angle(-8.5, 1)
-    servo_write_angle(8.5, 2)
+    servo_write_angle(-8.5, "X")
+    servo_write_angle(8.5, "Y")
     time.sleep(1)
-    servo_write_angle(0, 1)
-    servo_write_angle(0, 2)
+    servo_write_angle(0, "X")
+    servo_write_angle(0, "Y")
     time.sleep(1)
-    servo_write_angle(8.5,1)
-    servo_write_angle(-8.5,2)
+    servo_write_angle(8.5, "X")
+    servo_write_angle(-8.5, "Y")
     time.sleep(1)
