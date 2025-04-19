@@ -20,7 +20,7 @@ def servo_write_angle(angle, servo):
     min_pulse = 1000
     max_pulse = 2000
     # Convert angle from -90 to 90 degrees to 0 to 180 degrees
-    angle = angle*2 + 90
+    angle = angle + 90
     if servo == "X":
         servo_X.set_servo_pulsewidth(SERVO_X_PIN, (angle / 180) * (max_pulse - min_pulse) + min_pulse)
     elif servo == "Y":
