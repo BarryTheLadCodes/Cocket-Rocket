@@ -25,13 +25,18 @@ def servo_write_angle(angle, servo):
         servo_1.set_servo_pulsewidth(SERVO_1_PIN, (angle / 180) * (max_pulse - min_pulse) + min_pulse)
     elif servo == 2:
         servo_2.set_servo_pulsewidth(SERVO_2_PIN, (angle / 180) * (max_pulse - min_pulse) + min_pulse)
+
 while True:
-    servo_write_angle(-8.5, 1)
-    servo_write_angle(8.5, 2)
-    time.sleep(1)
-    servo_write_angle(0, 1)
-    servo_write_angle(0, 2)
-    time.sleep(1)
-    servo_write_angle(8.5,1)
-    servo_write_angle(-8.5,2)
-    time.sleep(1)
+    angle1 = input("Enter test angle for servo 1 (-90 to 90): ")
+    angle2 = input("Enter test angle for servo 2 (-90 to 90): ")
+    try:
+        angle1 = float(angle1)
+        angle2 = float(angle2)
+        if -90 <= angle1 <= 90 and -90 <= angle2 <= 90:
+            servo_write_angle(angle1, 1)
+            servo_write_angle(angle2, 2)
+            time.sleep(0.1)
+        else:
+            print("Angles must be between -90 and 90 degrees.")
+    except ValueError:
+        print("Invalid input. Please enter a number between -90 and 90.")
