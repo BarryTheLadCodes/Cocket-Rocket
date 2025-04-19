@@ -27,7 +27,7 @@ def servo_write_angle(angle, servo):
         servo_X.set_servo_pulsewidth(SERVO_X_PIN, (angle / 180) * (max_pulse - min_pulse) + min_pulse)
     elif servo == "Y":
         angle = angle + SERVO_Y_OFFSET + 90
-        servo_Y.set_servo_pulsewidth(SERVO_Y_PIN, (angle+SERVO_Y_OFFSET / 180) * (max_pulse - min_pulse) + min_pulse)
+        servo_Y.set_servo_pulsewidth(SERVO_Y_PIN, (angle / 180) * (max_pulse - min_pulse) + min_pulse)
 
 while True:
     servo_write_angle(-8.5, "X")
