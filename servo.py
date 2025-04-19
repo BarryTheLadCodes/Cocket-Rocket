@@ -4,8 +4,8 @@ import time
 # Set pin 21 as servo1 output
 SERVO_X_PIN = 20
 SERVO_Y_PIN = 21
-SERVO_X_OFFSET = 8
-SERVO_Y_OFFSET = -4
+SERVO_X_OFFSET = 10
+SERVO_Y_OFFSET = -5
 servo_X = pigpio.pi('localhost', 8888)
 servo_Y = pigpio.pi('localhost', 8888)
 
@@ -22,11 +22,12 @@ def servo_write_angle(angle, servo):
     min_pulse = 1000
     max_pulse = 2000
     # Convert angle from -90 to 90 degrees to 0 to 180 degrees
-    angle = angle*2 + 90
     if servo == "X":
-        servo_X.set_servo_pulsewidth(SERVO_X_PIN, ((angle+SERVO_X_OFFSET) / 180) * (max_pulse - min_pulse) + min_pulse)
+        angle = angle + SERVO_X_OFFSET + 90
+        servo_X.set_servo_pulsewidth(SERVO_X_PIN, (angle / 180) * (max_pulse - min_pulse) + min_pulse)
     elif servo == "Y":
-        servo_Y.set_servo_pulsewidth(SERVO_Y_PIN, ((angle+SERVO_Y_OFFSET) / 180) * (max_pulse - min_pulse) + min_pulse)
+        angle = angle + SERVO_Y_OFFSET + 90
+        servo_Y.set_servo_pulsewidth(SERVO_Y_PIN, (angle+SERVO_Y_OFFSET / 180) * (max_pulse - min_pulse) + min_pulse)
 
 while True:
     servo_write_angle(-8.5, "X")
