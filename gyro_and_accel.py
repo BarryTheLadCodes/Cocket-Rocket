@@ -96,11 +96,11 @@ def read_sensor_data():
     }
     return accelerometer_data, gyroscope_data
 
-def accel_pitch_roll(accelerometer_data):
+def accel_pitch_yaw(accelerometer_data):
     ax = accelerometer_data['x']
     ay = accelerometer_data['y']
     az = accelerometer_data['z']
 
     pitch = math.atan2(ay, math.sqrt(ax**2 + az**2)) * 180 / math.pi
-    roll = math.atan2(-ax, math.sqrt(ay**2 + az**2)) * 180 / math.pi
-    return pitch, roll
+    yaw = math.atan2(-ax, math.sqrt(ay**2 + az**2)) * 180 / math.pi
+    return pitch, yaw
