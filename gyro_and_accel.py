@@ -104,3 +104,45 @@ def accel_pitch_yaw(accelerometer_data):
     pitch = math.atan2(ay, math.sqrt(ax**2 + az**2)) * 180 / math.pi
     yaw = math.atan2(-ax, math.sqrt(ay**2 + az**2)) * 180 / math.pi
     return pitch, yaw
+
+if __name__ == "__main__":
+    print_count = 0
+    dt = 0.02 # Time step
+    process_noise = 0.01
+    measurement_noise = 0.1
+
+    pitch_filter = KalmanFilter(dt, process_noise, measurement_noise)
+    yaw_filter = KalmanFilter(dt, process_noise, measurement_noise)
+
+    while True:
+        # Measure start time of loop
+        start_time = time.time()
+
+        # Count to only print and store to json five times a second
+        print_count += 1
+
+        #Read data
+        accelerometer_data, gyroscope_data = read_sensor_data()
+
+        #Calculate pitch and yaw from accelerometer data
+        acc_pitch, acc_yaw = accel_pitch_yaw(accelerometer_data)
+
+        # Predict using gyroscope data
+        pitch_filter.predict(gyroscope_data['x'])
+        yaw_filter.predict(gyroscope_data['y'])
+
+        # Update using accelerometer data
+        pitch_filter.update(np.array([[acc_pitch]]))
+        yaw_filter.update(np.array([[acc_yaw]]))
+
+        # Get filtered pitch and yaw
+        pitch = pitch_filter.get_state()
+        yaw = yaw_filter.get_state()
+
+        if print_count == 10:
+            print_count = 0
+            print(f"Pitch: {pitch}°, Yaw: {yaw}°")
+
+        while time.time() - start_time < dt:
+            time.sleep(0.001)
+            pass
