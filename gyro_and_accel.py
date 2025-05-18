@@ -138,7 +138,7 @@ if __name__ == "__main__":
 
         # Get filtered pitch and yaw
         pitch = pitch_filter.get_state()
-        yaw = yaw_filter.get_state()
+        yaw = -yaw_filter.get_state()
 
         if print_count == 10:
             print_count = 0
