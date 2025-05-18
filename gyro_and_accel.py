@@ -101,7 +101,8 @@ def accel_pitch_yaw(accelerometer_data):
     ay = accelerometer_data['y']
     az = accelerometer_data['z']
 
-    pitch = math.atan2(ay, az) * 180 / math.pi
+    # Calculate pitch and yaw from accelerometer data
+    pitch = math.atan2(ay, az) * 180 / math.pi + 90 # Correct pitch so that vertical is 0
     yaw = math.atan2(-ax, math.sqrt(ay**2 + az**2)) * 180 / math.pi
     return pitch, yaw
 
