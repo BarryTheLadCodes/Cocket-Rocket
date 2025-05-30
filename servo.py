@@ -4,8 +4,8 @@ import time
 # Set pin 21 as servo1 output
 SERVO_X_PIN = 20
 SERVO_Y_PIN = 21
-SERVO_X_OFFSET = 12
-SERVO_Y_OFFSET = 28
+SERVO_X_OFFSET = 4
+SERVO_Y_OFFSET = 23
 servo_X = pigpio.pi('localhost', 8888)
 servo_Y = pigpio.pi('localhost', 8888)
 
