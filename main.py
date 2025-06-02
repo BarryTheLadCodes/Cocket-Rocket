@@ -12,7 +12,7 @@ def init():
     datetime = time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())
     json_start_time = time.time()
 
-    dt = 0.02 # Time step
+    dt = 0.05 # Time step
     process_noise = 0.01
     measurement_noise = 0.1
 
