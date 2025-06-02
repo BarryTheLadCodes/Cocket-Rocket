@@ -50,11 +50,11 @@ def rocket_motor_vectoring(rotation: tuple, goal_rotation: tuple):
     dpitch = goal_pitch - rocket_pitch
     dyaw = goal_yaw - rocket_yaw
     if dpitch >= 15:
-        servo.servo_write_angle(-10, "X")
-    if dpitch <= -15:
         servo.servo_write_angle(10, "X")
+    if dpitch <= -15:
+        servo.servo_write_angle(-10, "X")
     else:
-        servo.servo_write_angle(dpitch*(-2/3), "X")
+        servo.servo_write_angle(dpitch*(2/3), "X")
 
     if dyaw >= 15:
         servo.servo_write_angle(-10, "Y")
