@@ -93,11 +93,11 @@ def main():
         pitch = pitch_filter.get_state()
         yaw = yaw_filter.get_state()
 
-        # Control rocket motor vectoring
-        rocket_motor_vectoring((pitch, yaw), (0, 0))
 
         if print_count == 10:
             print_count = 0
+            # Control rocket motor vectoring
+            rocket_motor_vectoring((pitch, yaw), (0, 0))
             print(f"Pitch: {pitch}°, Yaw: {yaw}°, Altitude: {altitude}m")
             json_write(pitch, yaw, altitude, accelerometer_data, gyroscope_data, json_start_time, datetime)
 
